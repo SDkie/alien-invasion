@@ -76,3 +76,20 @@ func buildCity(text string) (*City, error) {
 
 	return city, nil
 }
+
+func getOppsiteDirection(direction string) string {
+	direction = strings.TrimSpace(direction)
+
+	switch direction {
+	case "north":
+		return "south"
+	case "south":
+		return "north"
+	case "east":
+		return "west"
+	case "west":
+		return "east"
+	}
+
+	return ""
+}
