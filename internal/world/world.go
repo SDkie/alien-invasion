@@ -36,12 +36,13 @@ func New(fileName string, aliensCount int) (*World, error) {
 		return nil, err
 	}
 
-	if len(world.Aliens) < aliensCount {
+	if len(world.Cities) < aliensCount {
 		err := fmt.Errorf("aliensCount should be less than cities count")
 		log.Println(err)
 		return nil, err
 	}
 
+	world.ActiveAliensCount = aliensCount
 	world.Aliens = BuildAliens(aliensCount)
 	world.AliensInCity = make(map[string][]int)
 
