@@ -1,33 +1,31 @@
 # alien-invasion
 
 ---
-* [Intro](#intro)
+* [Assumptions](#assumptions)
 * [Build](#build)
-* [Run](#run)
+* [Usage](#usage)
 * [Testing](#testing)
 ---
-## Intro:
-* first parameter is cities file similar to `sample_cities.txt` in the repo
-* second parameter is number of aliens
-* `<no-of-aliens>` should not be greater than cities count
-* Alien Max Steps is 10000 by default, but it can be changed using `--alien-max-steps` flag
-* Program execution stops if all the aliens are either dead/trapped or reach `alien-max-steps` count
+## Assumptions:
+* Aliens count should not be greater than cities count
 
 ## Build
     go build ./cmd/alien-invasion-cli
 
-## Run
-Basic cli command
+## Usage
 
-    alien-invasion-cli <cites-file> <no-of-aliens>
+
+    alien-invasion-cli allows to run the simulation of alien invasion
     
-Using optional flag
-
-    alien-invasion-cli <cites-file> <no-of-aliens> --alien-max-steps <steps-count>
-
-Sample command
-
-    alien-invasion-cli sample_cities.txt 3
+    Usage:
+      alien-invasion-cli <cites-file> <no-of-aliens> [flags]
+    
+    Examples:
+      alien-invasion-cli sample_cities.txt 2
+    
+    Flags:
+      -s, --alien-max-steps int   set max steps for aliens (default 10000)
+      -h, --help                  help for alien-invasion-cli
 
 ## Testing
     go test ./...
