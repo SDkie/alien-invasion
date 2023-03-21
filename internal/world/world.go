@@ -1,10 +1,16 @@
 package world
 
 import (
+	"errors"
 	"fmt"
 	"log"
 
 	"github.com/SDkie/alien-invasion/internal/random"
+)
+
+var (
+	ErrAliensMoreThanCities = errors.New("aliensCount should be less than cities count")
+	ErrInvalidAliensCount   = errors.New("aliensCount should be greater than 0")
 )
 
 // World struct keep track of the entire world which consists of Cities and Aliens
@@ -27,7 +33,7 @@ func New(fileName string, aliensCount int, aliensMaxMoves int) (*World, error) {
 	var err error
 
 	if aliensCount <= 0 {
-		err := fmt.Errorf("aliensCount should be greater than 0")
+		err = ErrInvalidAliensCount
 		log.Println(err)
 		return nil, err
 	}
@@ -38,7 +44,7 @@ func New(fileName string, aliensCount int, aliensMaxMoves int) (*World, error) {
 	}
 
 	if len(world.Cities) < aliensCount {
-		err := fmt.Errorf("aliensCount should be less than cities count")
+		err := ErrAliensMoreThanCities
 		log.Println(err)
 		return nil, err
 	}

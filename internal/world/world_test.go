@@ -62,3 +62,35 @@ func TestRunAlienInvasion(t *testing.T) {
 		t.Run(c.name, tf)
 	}
 }
+
+func TestAliensMoreThanCities(t *testing.T) {
+	citiesInput := "testdata/test_aliens_more_than_cities_input.txt"
+	alienMoves := "testdata/test_aliens_more_than_cities_aliens.txt"
+
+	_, aliensCount, err := random.NewMockRandom(alienMoves)
+	if err != nil {
+		t.Error(err)
+	}
+	_, err = world.New(citiesInput, aliensCount, 10000)
+	expectedErr := world.ErrAliensMoreThanCities
+
+	if err != expectedErr {
+		t.Errorf("expected err:%s got:%s", expectedErr, err)
+	}
+}
+
+func TestWithNoAliens(t *testing.T) {
+	citiesInput := "testdata/test_with_no_aliens_cities.txt"
+	alienMoves := "testdata/test_with_no_aliens_aliens.txt"
+
+	_, aliensCount, err := random.NewMockRandom(alienMoves)
+	if err != nil {
+		t.Error(err)
+	}
+	_, err = world.New(citiesInput, aliensCount, 10000)
+	expectedErr := world.ErrInvalidAliensCount
+
+	if err != expectedErr {
+		t.Errorf("expected err:%s got:%s", expectedErr, err)
+	}
+}
