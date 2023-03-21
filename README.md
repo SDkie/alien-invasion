@@ -8,13 +8,12 @@
 ---
 ## Assumptions:
 * Aliens count should not be greater than cities count
+* Each Alien start out at a different city
 
 ## Build
     go build ./cmd/alien-invasion-cli
 
 ## Usage
-
-
     alien-invasion-cli allows to run the simulation of alien invasion
     
     Usage:

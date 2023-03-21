@@ -32,12 +32,12 @@ func TestRunAlienInvasion(t *testing.T) {
 
 			random, aliensCount, err := random.NewMockRandom(alienMoves)
 			if err != nil {
-				t.Error(err)
+				t.Fatal(err)
 			}
 
 			w, err := world.New(citiesInput, aliensCount, 10000)
 			if err != nil {
-				t.Error(err)
+				t.Fatal(err)
 			}
 
 			w.Random = random
@@ -45,11 +45,11 @@ func TestRunAlienInvasion(t *testing.T) {
 
 			expectedCities, err := world.ReadCitiesFile(citiesOutput)
 			if err != nil {
-				t.Error(err)
+				t.Fatal(err)
 			}
 			aliensInCity, err := world.ReadAliensInCityFile(aliensInCityFile)
 			if err != nil {
-				t.Error(err)
+				t.Fatal(err)
 			}
 
 			if !reflect.DeepEqual(w.Cities, expectedCities) {
@@ -69,7 +69,7 @@ func TestAliensMoreThanCities(t *testing.T) {
 
 	_, aliensCount, err := random.NewMockRandom(alienMoves)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	_, err = world.New(citiesInput, aliensCount, 10000)
 	expectedErr := world.ErrAliensMoreThanCities
@@ -85,7 +85,7 @@ func TestWithNoAliens(t *testing.T) {
 
 	_, aliensCount, err := random.NewMockRandom(alienMoves)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	_, err = world.New(citiesInput, aliensCount, 10000)
 	expectedErr := world.ErrInvalidAliensCount
@@ -101,7 +101,7 @@ func TestCityNotFound(t *testing.T) {
 
 	_, aliensCount, err := random.NewMockRandom(alienMoves)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	_, err = world.New(citiesInput, aliensCount, 10000)
 	expectedErr := "B city not found in cities"
@@ -117,7 +117,7 @@ func TestInvalidRoadsData(t *testing.T) {
 
 	_, aliensCount, err := random.NewMockRandom(alienMoves)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 	_, err = world.New(citiesInput, aliensCount, 10000)
 	expectedErr := "invalid roads data for city:E"
