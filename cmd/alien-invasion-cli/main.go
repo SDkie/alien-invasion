@@ -10,6 +10,8 @@ import (
 )
 
 func main() {
+	log.SetFlags(0)
+
 	rootCmd := &cobra.Command{
 		Use:   "alien-invasion-cli",
 		Short: "alien-invasion-cli allows to run the simulation of alien invasion",

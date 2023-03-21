@@ -77,7 +77,7 @@ func buildCity(text string) (*City, error) {
 	return city, nil
 }
 
-func getOppsiteDirection(direction string) string {
+func getOppositeDirection(direction string) string {
 	direction = strings.TrimSpace(direction)
 
 	switch direction {

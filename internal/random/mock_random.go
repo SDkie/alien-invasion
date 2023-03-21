@@ -17,8 +17,8 @@ type MockRandom struct {
 
 // NewMockRandom reads the fileName and initializes the MockRandom struct
 //
-// startCity defines the first city of the aliens
-// directions defiends all the directions of the aliens
+// startCity defines the starting city of the aliens
+// directions defines all the directions which aliens takes
 func NewMockRandom(fileName string) (MockRandom, error) {
 	var random MockRandom
 
@@ -51,6 +51,9 @@ func (r MockRandom) ChooseCity(alienNo int, cities []string) string {
 	return r.startCity[alienNo]
 }
 
-func (r MockRandom) ChooseDirection(alienNo int, moveCount int, directions []string) string {
-	return r.directions[alienNo][moveCount]
+func (r MockRandom) ChooseDirection(alienNo int, directions []string) string {
+	direction := r.directions[alienNo][0]
+	r.directions[alienNo] = r.directions[alienNo][1:]
+
+	return direction
 }

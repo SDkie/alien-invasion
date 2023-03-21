@@ -7,7 +7,7 @@ import (
 	"github.com/SDkie/alien-invasion/internal/random"
 )
 
-// World struct keep track of the entire world which consistes of Cities and Aliens
+// World struct keep track of the entire world which consists of Cities and Aliens
 type World struct {
 	Cities map[string]*City // CityName -> *City
 
@@ -25,14 +25,14 @@ func New(fileName string, aliensCount int) (*World, error) {
 	var world World
 	var err error
 
-	world.Cities, err = ReadCitiesFile(fileName)
-	if err != nil {
-		return nil, err
-	}
-
 	if aliensCount <= 0 {
 		err := fmt.Errorf("aliensCount should be greater than 0")
 		log.Println(err)
+		return nil, err
+	}
+
+	world.Cities, err = ReadCitiesFile(fileName)
+	if err != nil {
 		return nil, err
 	}
 
@@ -83,7 +83,7 @@ func (w *World) RunAliensFight() {
 			continue
 		}
 
-		log.Printf("\tCity:%s destoryed because of aliens: %v fight\n", cityName, aliens)
+		log.Printf("\tCity:%s destroyed because of aliens: %v fight\n", cityName, aliens)
 
 		// Remove aliens
 		for _, alienNo := range aliens {
@@ -94,7 +94,7 @@ func (w *World) RunAliensFight() {
 		// Remove roads
 		city := w.Cities[cityName]
 		for direction, nextCity := range city.Roads {
-			delete(w.Cities[nextCity].Roads, getOppsiteDirection(direction))
+			delete(w.Cities[nextCity].Roads, getOppositeDirection(direction))
 		}
 
 		// Remove city
@@ -103,10 +103,9 @@ func (w *World) RunAliensFight() {
 	}
 }
 
-// ALiensMove simulate the random moment of the aliens
+// AliensMove simulate the random moment of the aliens
 func (w *World) AliensMove() {
-	log.Println()
-	log.Printf("Alien Move Count: %d", w.MovesCount)
+	log.Printf("\nAliens Move Count: %d", w.MovesCount)
 
 	for oldCity, aliens := range w.AliensInCity {
 		for index, alienNo := range aliens {
@@ -131,7 +130,7 @@ func (w *World) AliensMove() {
 			for d := range city.Roads {
 				directions = append(directions, d)
 			}
-			direction := w.Random.ChooseDirection(alienNo, alien.MovesCount, directions)
+			direction := w.Random.ChooseDirection(alienNo, directions)
 			newCity := city.Roads[direction]
 
 			w.AliensInCity[oldCity] = aliens[index+1:]
@@ -144,8 +143,7 @@ func (w *World) AliensMove() {
 
 // PrintingAllCities prints Cities map
 func (w *World) PrintingAllCities() {
-	log.Println()
-	log.Printf("Cities map at the end of simulation:")
+	log.Printf("\nCities map at the end of simulation:")
 
 	for _, c := range w.Cities {
 		msg := c.Name
