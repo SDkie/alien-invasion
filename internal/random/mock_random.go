@@ -19,13 +19,13 @@ type MockRandom struct {
 //
 // startCity defines the starting city of the aliens
 // directions defines all the directions which aliens takes
-func NewMockRandom(fileName string) (MockRandom, error) {
+func NewMockRandom(fileName string) (MockRandom, int, error) {
 	var random MockRandom
 
 	file, err := os.Open(fileName)
 	if err != nil {
 		log.Printf("error opening file:%s\n", err)
-		return random, err
+		return random, 0, err
 	}
 	defer file.Close()
 
@@ -44,7 +44,9 @@ func NewMockRandom(fileName string) (MockRandom, error) {
 		random.directions = append(random.directions, tokens[1:])
 	}
 
-	return random, nil
+	alienCount := len(random.startCity)
+
+	return random, alienCount, nil
 }
 
 func (r MockRandom) ChooseCity(alienNo int, cities []string) string {

@@ -15,7 +15,7 @@ func main() {
 	rootCmd := &cobra.Command{
 		Use:     "alien-invasion-cli <cites-file> <no-of-aliens>",
 		Short:   "alien-invasion-cli allows to run the simulation of alien invasion",
-		Example: "alien-invasion-cli sample_cities.txt 2",
+		Example: "  alien-invasion-cli sample_cities.txt 2",
 		Args:    cobra.ExactArgs(2),
 		Run:     rootCmdRun,
 	}
