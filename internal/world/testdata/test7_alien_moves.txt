@@ -1,0 +1,6 @@
+B west
+C east
+F south
+D north
+A east
+E north 

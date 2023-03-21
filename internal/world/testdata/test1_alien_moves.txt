@@ -1,3 +1,2 @@
 D south 
 C east
-A east
