@@ -126,3 +126,37 @@ func TestInvalidRoadsData(t *testing.T) {
 		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
 	}
 }
+
+func TestInvalidLineInCities(t *testing.T) {
+	citiesInput := "testdata/test_invalid_line_in_cities_cities.txt"
+	alienMoves := "testdata/test_invalid_line_in_cities_aliens.txt"
+
+	_, aliensCount, err := random.NewMockRandom(alienMoves)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = world.New(citiesInput, aliensCount, 10000)
+	expectedErr := "invalid text line in file:D south=A north"
+
+	if err == nil || err.Error() != expectedErr {
+		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
+	}
+}
+
+func TestAlienMaxMovesCount(t *testing.T) {
+	citiesInput := "testdata/test_alien_max_moves_count_cities.txt"
+	alienCount := 1
+	alienMaxMoves := 500
+
+	w, err := world.New(citiesInput, alienCount, alienMaxMoves)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w.Random = random.Random{}
+	w.RunAlienInvasion()
+
+	if w.MovesCount != alienMaxMoves {
+		t.Errorf("MovesCount shoud be:%d got:%d", alienMaxMoves, w.MovesCount)
+	}
+}

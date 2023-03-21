@@ -113,7 +113,7 @@ func (w *World) RunAliensFight() {
 
 // AliensMove simulate the random moment of the aliens
 func (w *World) AliensMove() {
-	log.Printf("Aliens Move Count: %d", w.MovesCount)
+	log.Printf("Aliens Move Count: %d", w.MovesCount+1)
 
 	for oldCity, aliens := range w.AliensInCity {
 		for index, alienNo := range aliens {
@@ -170,7 +170,7 @@ func (w *World) PrintingAllCities() {
 func (w *World) RunAlienInvasion() {
 	w.AssignCitiesToAliens()
 
-	for w.MovesCount = 1; w.MovesCount <= w.AliensMaxMoves; w.MovesCount++ {
+	for w.MovesCount = 0; w.MovesCount < w.AliensMaxMoves; w.MovesCount++ {
 		if w.ActiveAliensCount == 0 {
 			break
 		}
