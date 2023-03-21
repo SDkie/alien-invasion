@@ -24,7 +24,7 @@
       alien-invasion-cli sample_cities.txt 2
     
     Flags:
-      -s, --alien-max-steps int   set max steps for aliens (default 10000)
+      -s, --alien-max-moves int   set max moves for aliens (default 10000)
       -h, --help                  help for alien-invasion-cli
 
 ## Testing

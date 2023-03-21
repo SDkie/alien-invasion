@@ -19,15 +19,15 @@ func main() {
 		Args:    cobra.ExactArgs(2),
 		Run:     rootCmdRun,
 	}
-	rootCmd.PersistentFlags().IntP("alien-max-steps", "s", 10000, "set max steps for aliens")
+	rootCmd.PersistentFlags().IntP("alien-max-moves", "s", 10000, "set max moves for aliens")
 
 	rootCmd.Execute()
 }
 
 func rootCmdRun(cmd *cobra.Command, args []string) {
-	alienMaxSteps, err := cmd.Flags().GetInt("alien-max-steps")
+	alienMaxMoves, err := cmd.Flags().GetInt("alien-max-moves")
 	if err != nil {
-		log.Printf("error getting alien-max-steps flag:%s", err)
+		log.Printf("error getting alien-max-moves flag:%s", err)
 		return
 	}
 
@@ -38,7 +38,7 @@ func rootCmdRun(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	world, err := world.New(fileName, alienCount, alienMaxSteps)
+	world, err := world.New(fileName, alienCount, alienMaxMoves)
 	if err != nil {
 		return
 	}
