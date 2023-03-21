@@ -8,7 +8,7 @@
 ---
 ## Intro:
 * first parameter is cities file similar to `sample_cities.txt` in the repo
-* second paramter is number of aliens
+* second parameter is number of aliens
 * `<no-of-aliens>` should not be greater than cities count
 * Alien Max Steps is 10000 by default, but it can be changed using `--alien-max-steps` flag
 * Program execution stops if all the aliens are either dead/trapped or reach `alien-max-steps` count
@@ -24,6 +24,10 @@ Basic cli command
 Using optional flag
 
     alien-invasion-cli <cites-file> <no-of-aliens> --alien-max-steps <steps-count>
+
+Sample command
+
+    alien-invasion-cli sample_cities.txt 3
 
 ## Testing
     go test ./...
