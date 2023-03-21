@@ -17,6 +17,8 @@ func TestRunAlienInvasion(t *testing.T) {
 	}{
 		{name: "City A destroyed", testNo: 1, alienCount: 3},
 		{name: "City D destroyed", testNo: 2, alienCount: 2},
+		{name: "City E destroyed", testNo: 3, alienCount: 2},
+		{name: "Cities A and E destroyed", testNo: 4, alienCount: 4},
 	}
 
 	for _, c := range cases {

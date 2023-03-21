@@ -105,7 +105,7 @@ func (w *World) RunAliensFight() {
 
 // AliensMove simulate the random moment of the aliens
 func (w *World) AliensMove() {
-	log.Printf("\nAliens Move Count: %d", w.MovesCount)
+	log.Printf("Aliens Move Count: %d", w.MovesCount)
 
 	for oldCity, aliens := range w.AliensInCity {
 		for index, alienNo := range aliens {
@@ -143,7 +143,7 @@ func (w *World) AliensMove() {
 
 // PrintingAllCities prints Cities map
 func (w *World) PrintingAllCities() {
-	log.Printf("\nCities map at the end of simulation:")
+	log.Printf("Cities map at the end of simulation:")
 
 	for _, c := range w.Cities {
 		msg := c.Name
@@ -165,6 +165,7 @@ func (w *World) RunAlienInvasion() {
 
 		w.AliensMove()
 		w.RunAliensFight()
+		log.Println()
 	}
 
 	w.PrintingAllCities()
