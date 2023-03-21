@@ -119,11 +119,15 @@ func (w *World) AliensMove() {
 				continue
 			}
 
+			// Alien is trapped
+			if alien.Trapped {
+				continue
+			}
+
 			// Check if Alien is trapped
 			if len(city.Roads) == 0 {
 				log.Printf("\tAlien:%d trapped in city:%s", alienNo, city.Name)
-				delete(w.Aliens, alienNo)
-				delete(w.AliensInCity, oldCity)
+				alien.Trapped = true
 				w.ActiveAliensCount--
 				continue
 			}

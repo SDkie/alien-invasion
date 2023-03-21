@@ -28,6 +28,7 @@ func TestRunAlienInvasion(t *testing.T) {
 			citiesInput := fmt.Sprintf("testdata/test%d_cities_input.txt", c.testNo)
 			citiesOutput := fmt.Sprintf("testdata/test%d_cities_output.txt", c.testNo)
 			alienMoves := fmt.Sprintf("testdata/test%d_alien_moves.txt", c.testNo)
+			aliensInCityFile := fmt.Sprintf("testdata/test%d_aliens_in_city.txt", c.testNo)
 
 			random, aliensCount, err := random.NewMockRandom(alienMoves)
 			if err != nil {
@@ -46,9 +47,16 @@ func TestRunAlienInvasion(t *testing.T) {
 			if err != nil {
 				t.Error(err)
 			}
+			aliensInCity, err := world.ReadAliensInCityFile(aliensInCityFile)
+			if err != nil {
+				t.Error(err)
+			}
 
 			if !reflect.DeepEqual(w.Cities, expectedCities) {
 				t.Errorf("w.Cities does not match with %s", citiesOutput)
+			}
+			if !reflect.DeepEqual(w.AliensInCity, aliensInCity) {
+				t.Errorf("w.AliensInCity does not match with %s", aliensInCityFile)
 			}
 		}
 		t.Run(c.name, tf)
