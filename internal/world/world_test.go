@@ -159,4 +159,10 @@ func TestAlienMaxMovesCount(t *testing.T) {
 	if w.MovesCount != alienMaxMoves {
 		t.Errorf("MovesCount shoud be:%d got:%d", alienMaxMoves, w.MovesCount)
 	}
+	if len(w.Aliens) != alienCount {
+		t.Errorf("Aliens count should be:%d got:%d", alienCount, len(w.Aliens))
+	}
+	if len(w.AliensInCity) != alienCount {
+		t.Errorf("AliensInCity count should be:%d got:%d", alienCount, len(w.AliensInCity))
+	}
 }

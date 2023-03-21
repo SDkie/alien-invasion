@@ -121,7 +121,7 @@ func (w *World) AliensMove() {
 			alien := w.Aliens[alienNo]
 
 			// Alien has already moved
-			if alien.MovesCount >= w.MovesCount {
+			if alien.MovesCount > w.MovesCount {
 				continue
 			}
 
