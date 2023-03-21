@@ -75,7 +75,7 @@ func TestAliensMoreThanCities(t *testing.T) {
 	expectedErr := world.ErrAliensMoreThanCities
 
 	if err != expectedErr {
-		t.Errorf("expected err:%s got:%s", expectedErr, err)
+		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
 	}
 }
 
@@ -91,6 +91,38 @@ func TestWithNoAliens(t *testing.T) {
 	expectedErr := world.ErrInvalidAliensCount
 
 	if err != expectedErr {
-		t.Errorf("expected err:%s got:%s", expectedErr, err)
+		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
+	}
+}
+
+func TestCityNotFound(t *testing.T) {
+	citiesInput := "testdata/test_city_not_found_cities.txt"
+	alienMoves := "testdata/test_city_not_found_alien.txt"
+
+	_, aliensCount, err := random.NewMockRandom(alienMoves)
+	if err != nil {
+		t.Error(err)
+	}
+	_, err = world.New(citiesInput, aliensCount, 10000)
+	expectedErr := "B city not found in cities"
+
+	if err == nil || err.Error() != expectedErr {
+		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
+	}
+}
+
+func TestInvalidRoadsData(t *testing.T) {
+	citiesInput := "testdata/test_invalid_roads_data_cities.txt"
+	alienMoves := "testdata/test_invalid_roads_data_aliens.txt"
+
+	_, aliensCount, err := random.NewMockRandom(alienMoves)
+	if err != nil {
+		t.Error(err)
+	}
+	_, err = world.New(citiesInput, aliensCount, 10000)
+	expectedErr := "invalid roads data for city:E"
+
+	if err == nil || err.Error() != expectedErr {
+		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
 	}
 }

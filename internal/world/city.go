@@ -50,7 +50,35 @@ func ReadCitiesFile(fileName string) (map[string]*City, error) {
 		cities[city.Name] = city
 	}
 
+	err = verifyCitiesData(cities)
+	if err != nil {
+		return nil, err
+	}
+
 	return cities, nil
+}
+
+// verifyCitiesData verifies that all required cities and road links exists
+func verifyCitiesData(cities map[string]*City) error {
+	for cityName, city := range cities {
+		for direction, nextCityName := range city.Roads {
+			nextCity, ok := cities[nextCityName]
+			if !ok {
+				err := fmt.Errorf("%s city not found in cities", nextCityName)
+				log.Println(err)
+				return err
+			}
+
+			newCityName, ok := nextCity.Roads[getOppositeDirection(direction)]
+			if !ok || newCityName != cityName {
+				err := fmt.Errorf("invalid roads data for city:%s", nextCity.Name)
+				log.Println(err)
+				return err
+			}
+		}
+	}
+
+	return nil
 }
 
 // buildCity build city from the input text string
