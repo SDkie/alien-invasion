@@ -1,2 +1,2 @@
-A north 
-E south
+C east east west north
+D north north south south

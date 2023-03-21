@@ -14,6 +14,7 @@ type World struct {
 	Aliens            map[int]*Alien   // AlienNo -> *Alien
 	AliensInCity      map[string][]int // city --> List of AliensNo
 	ActiveAliensCount int
+	AliensMaxSteps    int
 
 	MovesCount int
 
@@ -21,7 +22,7 @@ type World struct {
 }
 
 // New creates the World instance with cities and aliens
-func New(fileName string, aliensCount int) (*World, error) {
+func New(fileName string, aliensCount int, aliensMaxSteps int) (*World, error) {
 	var world World
 	var err error
 
@@ -43,6 +44,7 @@ func New(fileName string, aliensCount int) (*World, error) {
 	}
 
 	world.ActiveAliensCount = aliensCount
+	world.AliensMaxSteps = aliensMaxSteps
 	world.Aliens = BuildAliens(aliensCount)
 	world.AliensInCity = make(map[string][]int)
 
@@ -158,7 +160,7 @@ func (w *World) PrintingAllCities() {
 func (w *World) RunAlienInvasion() {
 	w.AssignCitiesToAliens()
 
-	for w.MovesCount = 1; w.MovesCount <= 10000; w.MovesCount++ {
+	for w.MovesCount = 1; w.MovesCount <= w.AliensMaxSteps; w.MovesCount++ {
 		if w.ActiveAliensCount == 0 {
 			break
 		}

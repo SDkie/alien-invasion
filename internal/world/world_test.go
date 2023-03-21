@@ -31,7 +31,7 @@ func TestRunAlienInvasion(t *testing.T) {
 			alienMoves := fmt.Sprintf("testdata/test%d_alien_moves.txt", c.testNo)
 			alienCount := c.alienCount
 
-			w, err := world.New(citiesInput, alienCount)
+			w, err := world.New(citiesInput, alienCount, 10000)
 			if err != nil {
 				t.Error(err)
 			}
