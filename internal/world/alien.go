@@ -14,9 +14,11 @@ func NewAlien(no int) *Alien {
 	}
 }
 
-// BuildAliens builds all the aliens required to run invasion
-func BuildAliens(alienCount int) map[int]*Alien {
-	aliens := make(map[int]*Alien)
+type Aliens map[int]*Alien
+
+// NewAliens builds all the aliens required to run invasion
+func NewAliens(alienCount int) Aliens {
+	aliens := make(Aliens)
 
 	for i := 0; i < alienCount; i++ {
 		aliens[i] = NewAlien(i)

@@ -17,7 +17,7 @@ var (
 type World struct {
 	Cities Cities
 
-	Aliens               map[int]*Alien   // AlienNo -> *Alien
+	Aliens               Aliens
 	AliensInCity         map[string][]int // city --> List of AliensNo
 	ActiveAliensCount    int
 	AliensMaxMoves       int
@@ -46,11 +46,12 @@ func New(fileName string, aliensCount int, aliensMaxMoves int) (*World, error) {
 	}
 
 	world := &World{
+		Cities: cities,
+
+		Aliens:            NewAliens(aliensCount),
+		AliensInCity:      make(map[string][]int),
 		ActiveAliensCount: aliensCount,
 		AliensMaxMoves:    aliensMaxMoves,
-		AliensInCity:      make(map[string][]int),
-		Aliens:            BuildAliens(aliensCount),
-		Cities:            cities,
 	}
 
 	return world, nil
