@@ -15,7 +15,7 @@ var (
 
 // World struct keep track of the entire world which consists of Cities and Aliens
 type World struct {
-	Cities map[string]*City // CityName -> *City
+	Cities Cities
 
 	Aliens               map[int]*Alien   // AlienNo -> *Alien
 	AliensInCity         map[string][]int // city --> List of AliensNo
@@ -34,7 +34,7 @@ func New(fileName string, aliensCount int, aliensMaxMoves int) (*World, error) {
 		return nil, err
 	}
 
-	cities, err := ReadCitiesFile(fileName)
+	cities, err := NewCities(fileName)
 	if err != nil {
 		return nil, err
 	}

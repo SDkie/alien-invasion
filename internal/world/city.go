@@ -22,9 +22,11 @@ func NewCity(name string) *City {
 	}
 }
 
-// ReadCitiesFile reads file and creates a map containing all the cities information
-func ReadCitiesFile(fileName string) (map[string]*City, error) {
-	cities := make(map[string]*City)
+type Cities map[string]*City
+
+// NewCities reads file and creates a map containing all the cities information
+func NewCities(fileName string) (Cities, error) {
+	cities := make(Cities)
 
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -47,35 +49,50 @@ func ReadCitiesFile(fileName string) (map[string]*City, error) {
 			return nil, err
 		}
 
-		cities[city.Name] = city
-	}
+		cities.addCity(city.Name)
 
-	err = verifyCitiesData(cities)
-	if err != nil {
-		return nil, err
+		for direction, toCity := range city.Roads {
+			cities.addCity(toCity)
+			err = cities.addRoad(city.Name, toCity, direction)
+			if err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	return cities, nil
 }
 
-// verifyCitiesData verifies that all required cities and road links exists
-func verifyCitiesData(cities map[string]*City) error {
-	for cityName, city := range cities {
-		for direction, nextCityName := range city.Roads {
-			nextCity, ok := cities[nextCityName]
-			if !ok {
-				err := fmt.Errorf("%s city not found in cities", nextCityName)
-				log.Println(err)
-				return err
-			}
+// addCity adds city if its missing
+func (c Cities) addCity(cityName string) {
+	_, ok := c[cityName]
+	if !ok {
+		c[cityName] = NewCity(cityName)
+	}
+}
 
-			newCityName, ok := nextCity.Roads[getOppositeDirection(direction)]
-			if !ok || newCityName != cityName {
-				err := fmt.Errorf("invalid roads data for city:%s", nextCity.Name)
-				log.Println(err)
-				return err
-			}
-		}
+// addRoad adds road in both toCity and fromCity whatever is missing
+func (c Cities) addRoad(fromCityName, toCityName, direction string) error {
+	fromCity := c[fromCityName]
+	toCity := c[toCityName]
+
+	linkCity, ok := fromCity.Roads[direction]
+	if !ok {
+		fromCity.Roads[direction] = toCityName
+	} else if linkCity != toCityName {
+		err := fmt.Errorf("invalid city road for %s", fromCityName)
+		log.Println(err)
+		return err
+	}
+
+	oppDirection := getOppositeDirection(direction)
+	linkCity, ok = toCity.Roads[oppDirection]
+	if !ok {
+		toCity.Roads[oppDirection] = fromCityName
+	} else if linkCity != fromCityName {
+		err := fmt.Errorf("invalid city road for %s", toCityName)
+		log.Println(err)
+		return err
 	}
 
 	return nil
