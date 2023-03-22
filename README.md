@@ -9,6 +9,7 @@
 ## Assumptions:
 * Aliens count should not be greater than cities count
 * Each Alien start out at a different city
+* Two or more aliens can fight and destory the city
 
 ## Build
     go build ./cmd/alien-invasion-cli

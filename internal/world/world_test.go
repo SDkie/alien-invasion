@@ -1,8 +1,13 @@
 package world_test
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
 	"reflect"
+	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/SDkie/alien-invasion/internal/random"
@@ -48,7 +53,7 @@ func TestRunAlienInvasion(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			aliensInCity, err := world.ReadAliensInCityFile(aliensInCityFile)
+			aliensInCity, err := readAliensInCityFile(aliensInCityFile)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -137,8 +142,8 @@ func TestAlienMaxMovesCount(t *testing.T) {
 	w.Random = random.Random{}
 	w.RunAlienInvasion()
 
-	if w.MovesCount != alienMaxMoves {
-		t.Errorf("MovesCount shoud be:%d got:%d", alienMaxMoves, w.MovesCount)
+	if w.CurrAliensMovesCount != alienMaxMoves {
+		t.Errorf("MovesCount shoud be:%d got:%d", alienMaxMoves, w.CurrAliensMovesCount)
 	}
 	if len(w.Aliens) != alienCount {
 		t.Errorf("Aliens count should be:%d got:%d", alienCount, len(w.Aliens))
@@ -146,4 +151,43 @@ func TestAlienMaxMovesCount(t *testing.T) {
 	if len(w.AliensInCity) != alienCount {
 		t.Errorf("AliensInCity count should be:%d got:%d", alienCount, len(w.AliensInCity))
 	}
+}
+
+// readAliensInCityFile reads the input file to create the map of cityName to alienNos
+func readAliensInCityFile(fileName string) (map[string][]int, error) {
+	aliensInCity := make(map[string][]int)
+
+	file, err := os.Open(fileName)
+	if err != nil {
+		log.Printf("error opening file:%s", err)
+		return nil, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+
+	for scanner.Scan() {
+		text := strings.TrimSpace(scanner.Text())
+		if text == "" {
+			continue
+		}
+
+		tokens := strings.Split(text, "=")
+		if len(tokens) != 2 {
+			err := fmt.Errorf("invalid text line in file:%s", text)
+			log.Print(err)
+			return nil, err
+		}
+
+		cityName := strings.TrimSpace(tokens[0])
+		alienNo, err := strconv.Atoi(tokens[1])
+		if err != nil {
+			log.Printf("error parsing alienNo:%s", err)
+			return nil, err
+		}
+		aliensInCity[cityName] = []int{alienNo}
+	}
+
+	return aliensInCity, nil
 }

@@ -19,6 +19,7 @@ type MockRandom struct {
 //
 // startCity defines the starting city of the aliens
 // directions defines all the directions which aliens takes
+// It also returns the alienCount which is required to run the AlienInvasion
 func NewMockRandom(fileName string) (MockRandom, int, error) {
 	var random MockRandom
 

@@ -17,44 +17,43 @@ var (
 type World struct {
 	Cities map[string]*City // CityName -> *City
 
-	Aliens            map[int]*Alien   // AlienNo -> *Alien
-	AliensInCity      map[string][]int // city --> List of AliensNo
-	ActiveAliensCount int
-	AliensMaxMoves    int
-
-	MovesCount int
+	Aliens               map[int]*Alien   // AlienNo -> *Alien
+	AliensInCity         map[string][]int // city --> List of AliensNo
+	ActiveAliensCount    int
+	AliensMaxMoves       int
+	CurrAliensMovesCount int
 
 	Random random.Randomer
 }
 
 // New creates the World instance with cities and aliens
 func New(fileName string, aliensCount int, aliensMaxMoves int) (*World, error) {
-	var world World
-	var err error
-
 	if aliensCount <= 0 {
-		err = ErrInvalidAliensCount
+		err := ErrInvalidAliensCount
 		log.Println(err)
 		return nil, err
 	}
 
-	world.Cities, err = ReadCitiesFile(fileName)
+	cities, err := ReadCitiesFile(fileName)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(world.Cities) < aliensCount {
+	if len(cities) < aliensCount {
 		err := ErrAliensMoreThanCities
 		log.Println(err)
 		return nil, err
 	}
 
-	world.ActiveAliensCount = aliensCount
-	world.AliensMaxMoves = aliensMaxMoves
-	world.Aliens = BuildAliens(aliensCount)
-	world.AliensInCity = make(map[string][]int)
+	world := &World{
+		ActiveAliensCount: aliensCount,
+		AliensMaxMoves:    aliensMaxMoves,
+		AliensInCity:      make(map[string][]int),
+		Aliens:            BuildAliens(aliensCount),
+		Cities:            cities,
+	}
 
-	return &world, nil
+	return world, nil
 }
 
 // AssignCitiesToAliens assign a city to each Alien
@@ -113,7 +112,7 @@ func (w *World) RunAliensFight() {
 
 // AliensMove simulate the random moment of the aliens
 func (w *World) AliensMove() {
-	log.Printf("Aliens Move Count: %d", w.MovesCount+1)
+	log.Printf("Aliens Move Count: %d", w.CurrAliensMovesCount+1)
 
 	for oldCity, aliens := range w.AliensInCity {
 		for index, alienNo := range aliens {
@@ -121,7 +120,7 @@ func (w *World) AliensMove() {
 			alien := w.Aliens[alienNo]
 
 			// Alien has already moved
-			if alien.MovesCount > w.MovesCount {
+			if alien.MovesCount > w.CurrAliensMovesCount {
 				continue
 			}
 
@@ -170,7 +169,7 @@ func (w *World) PrintingAllCities() {
 func (w *World) RunAlienInvasion() {
 	w.AssignCitiesToAliens()
 
-	for w.MovesCount = 0; w.MovesCount < w.AliensMaxMoves; w.MovesCount++ {
+	for ; w.CurrAliensMovesCount < w.AliensMaxMoves; w.CurrAliensMovesCount++ {
 		if w.ActiveAliensCount == 0 {
 			break
 		}

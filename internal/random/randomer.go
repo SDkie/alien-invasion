@@ -1,6 +1,6 @@
 package random
 
-// Randomer is an interface that provide randomness to alien invasion
+// Randomer is an interface that provide functions to choose city and direction
 type Randomer interface {
 	ChooseCity(int, []string) string
 	ChooseDirection(int, []string) string

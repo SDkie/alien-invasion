@@ -11,7 +11,7 @@ import (
 // City struct represents a City
 type City struct {
 	Name  string
-	Roads map[string]string // direction -> city
+	Roads map[string]string // direction -> nextCityName
 }
 
 // NewCity create a City using city name
@@ -105,6 +105,7 @@ func buildCity(text string) (*City, error) {
 	return city, nil
 }
 
+// getOppositeDirection takes a direction as input and return the opposite direction
 func getOppositeDirection(direction string) string {
 	direction = strings.TrimSpace(direction)
 
