@@ -29,13 +29,14 @@ func TestRunAlienInvasion(t *testing.T) {
 			citiesOutput := fmt.Sprintf("testdata/test%d_cities_output.txt", c.testNo)
 			alienMoves := fmt.Sprintf("testdata/test%d_alien_moves.txt", c.testNo)
 			aliensInCityFile := fmt.Sprintf("testdata/test%d_aliens_in_city.txt", c.testNo)
+			alienMaxMoves := 10000
 
 			random, aliensCount, err := random.NewMockRandom(alienMoves)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			w, err := world.New(citiesInput, aliensCount, 10000)
+			w, err := world.New(citiesInput, aliensCount, alienMaxMoves)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -65,15 +66,11 @@ func TestRunAlienInvasion(t *testing.T) {
 
 func TestAliensMoreThanCities(t *testing.T) {
 	citiesInput := "testdata/test_aliens_more_than_cities_input.txt"
-	alienMoves := "testdata/test_aliens_more_than_cities_aliens.txt"
-
-	_, aliensCount, err := random.NewMockRandom(alienMoves)
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = world.New(citiesInput, aliensCount, 10000)
+	alienCount := 7
+	alienMaxMoves := 10000
 	expectedErr := world.ErrAliensMoreThanCities
 
+	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
 	if err != expectedErr {
 		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
 	}
@@ -81,15 +78,11 @@ func TestAliensMoreThanCities(t *testing.T) {
 
 func TestWithNoAliens(t *testing.T) {
 	citiesInput := "testdata/test_with_no_aliens_cities.txt"
-	alienMoves := "testdata/test_with_no_aliens_aliens.txt"
-
-	_, aliensCount, err := random.NewMockRandom(alienMoves)
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = world.New(citiesInput, aliensCount, 10000)
+	alienCount := 0
+	alienMaxMoves := 10000
 	expectedErr := world.ErrInvalidAliensCount
 
+	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
 	if err != expectedErr {
 		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
 	}
@@ -97,15 +90,11 @@ func TestWithNoAliens(t *testing.T) {
 
 func TestCityNotFound(t *testing.T) {
 	citiesInput := "testdata/test_city_not_found_cities.txt"
-	alienMoves := "testdata/test_city_not_found_alien.txt"
-
-	_, aliensCount, err := random.NewMockRandom(alienMoves)
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = world.New(citiesInput, aliensCount, 10000)
+	alienCount := 2
+	alienMaxMoves := 10000
 	expectedErr := "B city not found in cities"
 
+	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
 	if err == nil || err.Error() != expectedErr {
 		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
 	}
@@ -113,15 +102,11 @@ func TestCityNotFound(t *testing.T) {
 
 func TestInvalidRoadsData(t *testing.T) {
 	citiesInput := "testdata/test_invalid_roads_data_cities.txt"
-	alienMoves := "testdata/test_invalid_roads_data_aliens.txt"
-
-	_, aliensCount, err := random.NewMockRandom(alienMoves)
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = world.New(citiesInput, aliensCount, 10000)
+	alienCount := 2
+	alienMaxMoves := 10000
 	expectedErr := "invalid roads data for city:E"
 
+	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
 	if err == nil || err.Error() != expectedErr {
 		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
 	}
@@ -129,15 +114,11 @@ func TestInvalidRoadsData(t *testing.T) {
 
 func TestInvalidLineInCities(t *testing.T) {
 	citiesInput := "testdata/test_invalid_line_in_cities_cities.txt"
-	alienMoves := "testdata/test_invalid_line_in_cities_aliens.txt"
-
-	_, aliensCount, err := random.NewMockRandom(alienMoves)
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = world.New(citiesInput, aliensCount, 10000)
+	alienCount := 2
+	alienMaxMoves := 10000
 	expectedErr := "invalid text line in file:D south=A north"
 
+	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
 	if err == nil || err.Error() != expectedErr {
 		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
 	}
