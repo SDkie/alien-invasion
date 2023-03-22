@@ -26,6 +26,8 @@ func TestRunAlienInvasion(t *testing.T) {
 		{name: "No Cities destroyed", testNo: 5},
 		{name: "One Alien trapped", testNo: 6},
 		{name: "Two Alien trapped", testNo: 7},
+		{name: "City destroyed by 3 aliens", testNo: 8},
+		{name: "City destroyed by 4 aliens", testNo: 9},
 	}
 
 	for _, c := range cases {
@@ -142,6 +144,19 @@ func TestRoadToSameCity(t *testing.T) {
 
 	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
 	if err == nil || err.Error() != expectedErr {
+		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
+	}
+}
+
+func TestEmptyCitiesFile(t *testing.T) {
+	// NOTE: The city F is linked to itself
+	citiesInput := "testdata/test_empty_cities_file.txt"
+	alienCount := 2
+	alienMaxMoves := 10000
+	expectedErr := world.ErrEmptyCitiesFile
+
+	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
+	if err != expectedErr {
 		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
 	}
 }

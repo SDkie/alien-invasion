@@ -2,10 +2,15 @@ package world
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+)
+
+var (
+	ErrEmptyCitiesFile = errors.New("empty cities file")
 )
 
 // City struct represents a City
@@ -58,6 +63,12 @@ func NewCities(fileName string) (Cities, error) {
 				return nil, err
 			}
 		}
+	}
+
+	if len(cities) == 0 {
+		err := ErrEmptyCitiesFile
+		log.Println(err)
+		return nil, err
 	}
 
 	return cities, nil

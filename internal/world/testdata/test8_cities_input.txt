@@ -1,0 +1,4 @@
+A east=B west=C south=D
+B
+C
+D
