@@ -123,7 +123,7 @@ func TestInvalidCityRoad(t *testing.T) {
 }
 
 func TestInvalidDirectionInCities(t *testing.T) {
-	// The direction text 'eaast' is invalid in the cities file
+	// NOTE: The direction text 'eaast' is invalid in the cities file
 	citiesInput := "testdata/test_invalid_direction_in_cities.txt"
 	alienCount := 2
 	alienMaxMoves := 10000
@@ -149,7 +149,7 @@ func TestRoadToSameCity(t *testing.T) {
 }
 
 func TestEmptyCitiesFile(t *testing.T) {
-	// NOTE: The city F is linked to itself
+	// NOTE: cities file is empty
 	citiesInput := "testdata/test_empty_cities_file.txt"
 	alienCount := 2
 	alienMaxMoves := 10000
@@ -175,7 +175,7 @@ func TestAlienMaxMovesCount(t *testing.T) {
 	w.RunAlienInvasion()
 
 	if w.CurrAliensMovesCount != alienMaxMoves {
-		t.Errorf("MovesCount shoud be:%d got:%d", alienMaxMoves, w.CurrAliensMovesCount)
+		t.Errorf("MovesCount should be:%d got:%d", alienMaxMoves, w.CurrAliensMovesCount)
 	}
 	if len(w.Aliens) != alienCount {
 		t.Errorf("Aliens count should be:%d got:%d", alienCount, len(w.Aliens))
