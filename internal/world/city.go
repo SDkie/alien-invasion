@@ -73,6 +73,17 @@ func (c Cities) addCity(cityName string) {
 
 // addRoad adds road in both toCity and fromCity whatever is missing
 func (c Cities) addRoad(fromCityName, toCityName, direction string) error {
+	if fromCityName == toCityName {
+		err := fmt.Errorf("invalid city road for %s", toCityName)
+		log.Println(err)
+		return err
+	}
+
+	oppDirection, err := getOppositeDirection(direction)
+	if err != nil {
+		return err
+	}
+
 	fromCity := c[fromCityName]
 	toCity := c[toCityName]
 
@@ -85,7 +96,6 @@ func (c Cities) addRoad(fromCityName, toCityName, direction string) error {
 		return err
 	}
 
-	oppDirection := getOppositeDirection(direction)
 	linkCity, ok = toCity.Roads[oppDirection]
 	if !ok {
 		toCity.Roads[oppDirection] = fromCityName
@@ -123,19 +133,19 @@ func buildCity(text string) (*City, error) {
 }
 
 // getOppositeDirection takes a direction as input and return the opposite direction
-func getOppositeDirection(direction string) string {
-	direction = strings.TrimSpace(direction)
-
+func getOppositeDirection(direction string) (string, error) {
 	switch direction {
 	case "north":
-		return "south"
+		return "south", nil
 	case "south":
-		return "north"
+		return "north", nil
 	case "east":
-		return "west"
+		return "west", nil
 	case "west":
-		return "east"
+		return "east", nil
+	default:
+		err := fmt.Errorf("invalid direction: %s", direction)
+		log.Println(err)
+		return "", err
 	}
-
-	return ""
 }

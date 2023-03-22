@@ -70,6 +70,7 @@ func TestRunAlienInvasion(t *testing.T) {
 }
 
 func TestAliensMoreThanCities(t *testing.T) {
+	// NOTE: cities File has 6 cities
 	citiesInput := "testdata/test_aliens_more_than_cities_input.txt"
 	alienCount := 7
 	alienMaxMoves := 10000
@@ -94,10 +95,50 @@ func TestWithNoAliens(t *testing.T) {
 }
 
 func TestInvalidLineInCities(t *testing.T) {
+	// NOTE: Invalid Line in file: 'D south=A north'
 	citiesInput := "testdata/test_invalid_line_in_cities_cities.txt"
 	alienCount := 2
 	alienMaxMoves := 10000
 	expectedErr := "invalid text line in file:D south=A north"
+
+	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
+	if err == nil || err.Error() != expectedErr {
+		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
+	}
+}
+
+func TestInvalidCityRoad(t *testing.T) {
+	// NOTE: test file has invalid road links for city E
+	citiesInput := "testdata/test_invalid_city_road_cities.txt"
+	alienCount := 2
+	alienMaxMoves := 10000
+	expectedErr := "invalid city road for E"
+
+	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
+	if err == nil || err.Error() != expectedErr {
+		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
+	}
+}
+
+func TestInvalidDirectionInCities(t *testing.T) {
+	// The direction text 'eaast' is invalid in the cities file
+	citiesInput := "testdata/test_invalid_direction_in_cities.txt"
+	alienCount := 2
+	alienMaxMoves := 10000
+	expectedErr := "invalid direction: eaast"
+
+	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
+	if err == nil || err.Error() != expectedErr {
+		t.Errorf("expected err:'%s' got:'%s'", expectedErr, err)
+	}
+}
+
+func TestRoadToSameCity(t *testing.T) {
+	// NOTE: The city F is linked to itself
+	citiesInput := "testdata/test_road_to_same_city.txt"
+	alienCount := 2
+	alienMaxMoves := 10000
+	expectedErr := "invalid city road for F"
 
 	_, err := world.New(citiesInput, alienCount, alienMaxMoves)
 	if err == nil || err.Error() != expectedErr {

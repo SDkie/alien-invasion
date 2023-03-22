@@ -101,7 +101,8 @@ func (w *World) RunAliensFight() {
 		// Remove roads
 		city := w.Cities[cityName]
 		for direction, nextCity := range city.Roads {
-			delete(w.Cities[nextCity].Roads, getOppositeDirection(direction))
+			oppDirection, _ := getOppositeDirection(direction)
+			delete(w.Cities[nextCity].Roads, oppDirection)
 		}
 
 		// Remove city
