@@ -185,6 +185,84 @@ func TestAlienMaxMovesCount(t *testing.T) {
 	}
 }
 
+func TestAssignCitiesToAliens(t *testing.T) {
+	citiesInput := "testdata/test_assign_cities_to_aliens_input.txt"
+	alienMoves := "testdata/test_assign_cities_to_aliens_alien_moves.txt"
+	aliensInCityFile := "testdata/test_assign_cities_to_aliens_aliens_in_city.txt"
+	alienMaxMoves := 10000
+
+	random, aliensCount, err := random.NewMockRandom(alienMoves)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w, err := world.New(citiesInput, aliensCount, alienMaxMoves)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w.Random = random
+	w.AssignCitiesToAliens()
+
+	// No change in cities expected
+	expectedCities, err := world.NewCities(citiesInput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	aliensInCity, err := readAliensInCityFile(aliensInCityFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(w.Cities, expectedCities) {
+		t.Errorf("w.Cities does not match with %s", citiesInput)
+	}
+	if !reflect.DeepEqual(w.AliensInCity, aliensInCity) {
+		t.Errorf("w.AliensInCity does not match with %s", aliensInCityFile)
+	}
+}
+
+func TestAliensMove(t *testing.T) {
+	citiesInput := "testdata/test_aliens_move_input.txt"
+	alienMoves := "testdata/test_alien_moves.txt"
+	aliensInCityFile := "testdata/test_aliens_move_aliens_in_city.txt"
+	alienMaxMoves := 10000
+
+	random, aliensCount, err := random.NewMockRandom(alienMoves)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w, err := world.New(citiesInput, aliensCount, alienMaxMoves)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	w.Random = random
+
+	w.AssignCitiesToAliens()
+	for ; w.CurrAliensMovesCount < w.AliensMaxMoves; w.CurrAliensMovesCount++ {
+		w.AliensMove()
+	}
+
+	// No change in cities expected
+	expectedCities, err := world.NewCities(citiesInput)
+	if err != nil {
+		t.Fatal(err)
+	}
+	aliensInCity, err := readAliensInCityFile(aliensInCityFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(w.Cities, expectedCities) {
+		t.Errorf("w.Cities does not match with %s", citiesInput)
+	}
+	if !reflect.DeepEqual(w.AliensInCity, aliensInCity) {
+		t.Errorf("w.AliensInCity does not match with %s", aliensInCityFile)
+	}
+}
+
 // readAliensInCityFile reads the input file to create the map of cityName to alienNos
 func readAliensInCityFile(fileName string) (map[string][]int, error) {
 	aliensInCity := make(map[string][]int)
@@ -206,6 +284,12 @@ func readAliensInCityFile(fileName string) (map[string][]int, error) {
 		}
 
 		tokens := strings.Split(text, "=")
+		if len(tokens) == 1 {
+			cityName := tokens[0]
+			aliensInCity[cityName] = make([]int, 0)
+			continue
+		}
+
 		if len(tokens) != 2 {
 			err := fmt.Errorf("invalid text line in file:%s", text)
 			log.Print(err)
