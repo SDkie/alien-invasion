@@ -1,4 +1,4 @@
-package random
+package world
 
 // Randomer is an interface that provide functions to choose city and direction
 type Randomer interface {

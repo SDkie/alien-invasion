@@ -38,7 +38,7 @@ func TestRunAlienInvasion(t *testing.T) {
 			aliensInCityFile := fmt.Sprintf("testdata/test%d_aliens_in_city.txt", c.testNo)
 			alienMaxMoves := 10000
 
-			random, aliensCount, err := random.NewMockRandom(alienMoves)
+			random, aliensCount, err := NewMockRandom(alienMoves)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -191,7 +191,7 @@ func TestAssignCitiesToAliens(t *testing.T) {
 	aliensInCityFile := "testdata/test_assign_cities_to_aliens_aliens_in_city.txt"
 	alienMaxMoves := 10000
 
-	random, aliensCount, err := random.NewMockRandom(alienMoves)
+	random, aliensCount, err := NewMockRandom(alienMoves)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -228,7 +228,7 @@ func TestAliensMove(t *testing.T) {
 	aliensInCityFile := "testdata/test_aliens_move_aliens_in_city.txt"
 	alienMaxMoves := 10000
 
-	random, aliensCount, err := random.NewMockRandom(alienMoves)
+	random, aliensCount, err := NewMockRandom(alienMoves)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-
-	"github.com/SDkie/alien-invasion/internal/random"
 )
 
 var (
@@ -23,7 +21,7 @@ type World struct {
 	AliensMaxMoves       int
 	CurrAliensMovesCount int
 
-	Random random.Randomer
+	Random Randomer
 }
 
 // New creates the World instance with cities and aliens

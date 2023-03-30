@@ -1,4 +1,4 @@
-package random
+package world_test
 
 import (
 	"bufio"
